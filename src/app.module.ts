@@ -10,16 +10,7 @@ import { AuthModule } from './auth/auth.module';
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: async (configService: ConfigService) => ({
-                uri: configService.get('MONGODB_URI'),
-                connectionFactory: (connection) => {
-                    connection.on('connected', () => {
-                        console.log('Connected to database');
-                    });
-                    connection.on('error', (error) => {
-                        console.log(`Database connection error: ${error}`);
-                    });
-                    return connection;
-                }
+                uri: configService.get('MONGODB_URI')
             }),
         }),
         ConfigModule.forRoot({
