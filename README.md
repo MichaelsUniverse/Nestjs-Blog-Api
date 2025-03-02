@@ -15,7 +15,7 @@ $ npm install
 
 ```bash
 # development
-$ npm run start:dev
+$ ./start-dev.sh
 
 # production mode
 $ npm run start:prod

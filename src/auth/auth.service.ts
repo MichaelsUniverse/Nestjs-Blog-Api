@@ -7,14 +7,15 @@ import { Model } from 'mongoose';
 import { User } from '../../schema/user.schema';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { v4 as uuidv4 } from 'uuid';
+import { TokenService } from '../token/token.service.js';
 
 @Injectable()
 export class AuthService {
     constructor(
         @InjectModel('user') private userModel: Model<User>,
         private jwt:JwtService,
-        private config:ConfigService
+        private config:ConfigService,
+        private token: TokenService
     ) {}
 
     async loginUser(loginDto: LoginDto) {
@@ -45,10 +46,7 @@ export class AuthService {
 
         const userId = user._id.toString();
 
-        return {
-            accessToken: await this.userAccessToken(userId, user.email),
-            refreshToken: await this.userRefreshToken(userId),
-        };
+        return await this.token.generateTokens(userId, user.email);
     }
 
     async registerUser(registerDto: RegisterDto) {
@@ -69,62 +67,25 @@ export class AuthService {
 
         // Hashing the password
 
-        const hash = bcrypt.hashSync(registerDto.password, 14);
+        const hash = bcrypt.hashSync(registerDto.password, 12);
 
         try {
 
             // Saving the user to the database
 
-            const user = await this.userModel.create({
+            const newUser = new this.userModel({
                 ...userWithoutPassword,
                 hash,
                 createdAt: new Date(),
                 updatedAt: new Date(),
             });
 
-            // Generating and returning tokens
+            await newUser.save();
 
-            const userId = user._id.toString();
-
-            return {
-                accessToken: await this.userAccessToken(userId, user.email),
-                refreshToken: await this.userRefreshToken(userId),
-            };
+            return HttpStatus.CREATED;
 
         } catch (error) {
             throw new Error(error);
         }
     }
-
-    async userAccessToken(userId: string, userEmail: string) {
-
-        const payload = {
-            sub: userId
-        }
-
-        const accessToken = await this.jwt.signAsync(payload, {
-            expiresIn: '15m',
-            secret: this.config.get('JWT_ACCESS_SECRET'),
-        });
-
-        return accessToken;
-    }
-
-    async userRefreshToken(userId: string) {
-
-        const payload = {
-            sub: userId,
-            jti: uuidv4(),
-        }
-
-        const userRefreshToken = await this.jwt.signAsync(
-            payload,
-            {
-                expiresIn: '30d',
-                secret: this.config.get('JWT_REFRESH_SECRET'),
-            }
-        );
-
-        return userRefreshToken;
-    };
 }

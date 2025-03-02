@@ -21,7 +21,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "db:test:up": "docker compose up mongo-test -d",
     "db:test:down": "docker compose down mongo-test",
-    "test:e2e": "npm run db:test:up && jest --no-cache --config ./test/jest-e2e.json && npm run db:test:down"
+    "test:e2e": "npm run db:test:up && jest --no-cache --config ./test/jest-e2e.json && npm run db:test:down || npm run db:test:down"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.0",
