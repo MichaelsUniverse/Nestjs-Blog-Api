@@ -1,4 +1,4 @@
-import { Controller, Body, Patch, UseGuards, Get, HttpCode } from '@nestjs/common';
+import { Controller, Body, Patch, UseGuards, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { EditUserDto } from './dto/index';
 import { GetUser } from './decorator/user.decorator';
@@ -17,7 +17,7 @@ export class UserController {
         return user;
     }
 
-    @HttpCode(202)
+    @HttpCode(HttpStatus.ACCEPTED)
     @Patch('edit')
     updateUser(@GetUser('_id') userId: string, @Body() updateUserDto: EditUserDto) {
         return this.userService.updateUser(userId, updateUserDto);

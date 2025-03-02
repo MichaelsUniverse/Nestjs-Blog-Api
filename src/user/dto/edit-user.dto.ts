@@ -1,8 +1,9 @@
-import { IsOptional, IsString, Matches } from "class-validator";
+import { IsOptional, IsString, Length, Matches } from "class-validator";
 
 export class EditUserDto {
     @IsString()
     @IsOptional()
+    @Length(4, 8)
     username?: string;
 
     @IsString()
@@ -11,6 +12,7 @@ export class EditUserDto {
 
     @IsString()
     @IsOptional()
+    @Length(4, 8)
     @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, { message: "Password too weak" })
     password?: string;
 }
