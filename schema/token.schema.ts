@@ -1,14 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 import { HydratedDocument } from 'mongoose';
+import { User } from './user.schema';
 
 export type RefreshTokenDocument = HydratedDocument<RefreshToken>;
 
 @Schema()
 export class RefreshToken {
     @Prop({
-        required: true
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
     })
-    userId: string;
+    user: User;
 
     @Prop({
         required: true

@@ -5,15 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from '../../schema/user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
-import { TokenModule } from '../token/token.module.js';
-import { TokenService } from '../token/token.service.js';
-import { RefreshTokenSchema } from '../../schema/token.schem.js';
+import { TokenModule } from '../token/token.module';
+import { RefreshTokenSchema } from '../../schema/token.schema';
 
 @Module({
     imports: [
         MongooseModule.forFeature([
             { name: "user", schema: UserSchema },
-            { name: "refresh token", schema: RefreshTokenSchema }
+            { name: "refreshtoken", schema: RefreshTokenSchema }
         ]),
         JwtModule.register({}),
         TokenModule
@@ -23,7 +22,6 @@ import { RefreshTokenSchema } from '../../schema/token.schem.js';
     ],
     providers: [
         AuthService,
-        TokenService,
         JwtStrategy
     ],
 })

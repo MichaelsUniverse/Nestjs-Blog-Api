@@ -7,7 +7,7 @@ import { Model } from 'mongoose';
 import { User } from '../../schema/user.schema';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { TokenService } from '../token/token.service.js';
+import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class AuthService {
@@ -46,7 +46,11 @@ export class AuthService {
 
         const userId = user._id.toString();
 
-        return await this.token.generateTokens(userId, user.email);
+        const accessToken = await this.token.generateTokens(userId, user.email);
+
+        return {
+            access_token: accessToken
+        };
     }
 
     async registerUser(registerDto: RegisterDto) {
@@ -82,7 +86,10 @@ export class AuthService {
 
             await newUser.save();
 
-            return HttpStatus.CREATED;
+            return {
+                message: 'User Registered',
+                status: HttpStatus.CREATED,
+            };
 
         } catch (error) {
             throw new Error(error);

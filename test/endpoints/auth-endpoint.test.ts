@@ -112,15 +112,15 @@ export const authEndpointTest = () => {
                     .post(endPoint)
                     .withBody(validLogin)
                     .expectStatus(HttpStatus.OK)
-                    .stores("userAT", "accessToken");
+                    .stores("userAT", "access_token");
             });
         });
 
     });
 
-    describe("Refresh token Test", () => {
-        it.todo("should return 400 - BAD REQUEST | No Token");
-        it.todo("should return 401 - UNAUTHORIZED | Invalid Token");
-        it.todo("should return 200 - OK | Valid Token");
-    });
+    // describe("Refresh token Test", () => {
+    //     it.todo("should return 400 - BAD REQUEST | No Token");
+    //     it.todo("should return 401 - UNAUTHORIZED | Invalid Token");
+    //     it.todo("should return 200 - OK | Valid Token");
+    // });
 };
