@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RefreshToken } from '../../schema/token.schem.js';
+import { RefreshToken } from '../../schema/token.schema';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class TokenService {
     constructor(
         private jwt: JwtService,
         private config: ConfigService,
-        @InjectModel('refresh token') private refreshToken: Model<RefreshToken>,
+        @InjectModel('refreshtoken') private refreshToken: Model<RefreshToken>,
     ) {}
 
     async generateTokens(userId: string, userEmail: string) {
@@ -19,21 +19,21 @@ export class TokenService {
         const refreshToken = await this.generateRefreshToken(userId);
         const refreshHash = bcrypt.hashSync(refreshToken, 8);
 
-        const accessToken = await this.generateAccessToken(userId, refreshHash);
+        const accessToken = this.generateAccessToken(userId, refreshHash);
 
         await this.storeRefreshToken(userId, refreshHash);
 
         return accessToken;
     };
 
-    async generateAccessToken(userId: string, refreshHash: string) {
+    generateAccessToken(userId: string, refreshHash: string) {
 
         const payload = {
             sub: userId,
             refreshHash,
         }
 
-        const accessToken = await this.jwt.signAsync(payload, {
+        const accessToken = this.jwt.sign(payload, {
             expiresIn: this.config.get('JWT_ACCESS_EXPIRATION'),
             secret: this.config.get('JWT_ACCESS_SECRET'),
         });
@@ -58,14 +58,14 @@ export class TokenService {
         return userRefreshToken;
     };
 
-    async storeRefreshToken(userId: string, refreshHash: string) {
+    async storeRefreshToken(user: string, refreshHash: string) {
 
         const expirationDate = new Date();
 
         expirationDate.setDate(+expirationDate.getDate() + +this.config.get('JWT_REFRESH_EXPIRATION').split('d')[0]);
 
         const newRefreshToken = new this.refreshToken({
-            userId,
+            user,
             tokenHash: refreshHash,
             expires_at: expirationDate,
         });
@@ -73,20 +73,28 @@ export class TokenService {
         await newRefreshToken.save();
     };
 
-    async validateRefreshToken(token) {
+    async validateRefreshToken(payload) {
 
-        const { sub, refreshHash, ...payload } = this.jwt.decode(token);
+        // Obtain refresh token from database
 
-        console.log(refreshHash);
-
-        const Token = await this.refreshToken.findOne({
-            refreshHash: refreshHash
+        const refresh = await this.refreshToken.findOne({
+            tokenHash: payload.refreshHash
         });
 
-        if (!Token) {
-            console.log("NO USER")
+        // Check refresh token exists
+
+        if (!refresh) {
+            return false;
         }
 
-        console.log(Token);
+        // Check refresh token has the correct userId
+
+        // console.log('Refresh User: ', refresh.user);
+
+        if (refresh.user.toString() !== payload.sub) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -1,14 +1,13 @@
 import { Controller, Body, Patch, UseGuards, Get, HttpCode, HttpStatus, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { EditUserDto } from './dto/index';
-import { GetUser } from './decorator/user.decorator';
+import { GetUser } from './decorator/get-user.decorator';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../../schema/user.schema';
 import { JwtAuthGuard } from '../auth/guard/jwt.guard';
-import { RefreshAuthGuard } from '../auth/guard/refresh.guard.js';
 
-@UseGuards(JwtAuthGuard, RefreshAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
     constructor(@InjectModel('user') user: Model<User>, private readonly userService: UserService) {}

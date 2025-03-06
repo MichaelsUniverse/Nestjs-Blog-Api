@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { TokenService } from './token/token.service';
 import { TokenModule } from './token/token.module';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
     imports: [
@@ -20,7 +21,9 @@ import { TokenModule } from './token/token.module';
         }),
         UserModule,
         AuthModule,
-        TokenModule
-    ]
+        TokenModule,
+        PostsModule
+    ],
 })
+
 export class AppModule {}

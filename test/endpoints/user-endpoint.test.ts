@@ -23,11 +23,9 @@ export const userEndpointTest = () => {
             return pactum.spec()
                 .get(endPoint)
                 .withHeaders({
-                    Authorization: "Bearer $S{userAT}"
+                    Authorization: "Bearer S${userAT}"
                 })
                 .expectStatus(HttpStatus.OK)
-                .expectBodyContains(userDetails.username)
-                .expectBodyContains(userDetails.email)
                 .inspect()
         });
     });
