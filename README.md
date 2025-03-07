@@ -7,10 +7,11 @@
 
 ## NestJS Blog API Project Summary
 
-    This API project implements a blog platform backend using NestJS and MongoDB. It features a comprehensive authentication system using JWT with access and refresh tokens,
+    This API project implements a blog platform backend using NestJS and MongoDB.
+    It features a comprehensive authentication system using JWT with access and refresh tokens,
     user capabilities including registration and profile updates, and a post management system.
-    The application is built following NestJS practices, while leveraging Mongoose for database interactions and implementing proper validation and error handling
-    throughout the codebase.
+    The application is built following NestJS practices, while leveraging Mongoose for database
+    interactions and implementing proper validation and error handling throughout the codebase.
 
 
 ## Project setup
