@@ -2,11 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { GetUser } from '../user/decorator/get-user.decorator.js';
+import { GetUser } from '../user/decorator/get-user.decorator';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from '../../schema/user.schema.js';
-import { JwtAuthGuard } from '../auth/guard/jwt.guard.js';
+import { User } from '../../schema/user.schema';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('post')
