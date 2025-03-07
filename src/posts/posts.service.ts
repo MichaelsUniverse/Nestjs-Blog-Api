@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { User } from '../../schema/user.schema.js';
+import { InjectModel } from '@nestjs/mongoose';
+import { Post } from '../../schema/post.schema.js';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PostsService {
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
-  }
+    constructor(@InjectModel('post') private postModel: Model<Post>) {}
 
-  findAll() {
-    return `This action returns all posts`;
-  }
+    async create(user: User, createPostDto: CreatePostDto) {
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
-  }
+        const post = new this.postModel({
+            user,
+            ...createPostDto,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
-  }
+        await post.save();
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
-  }
+        return {
+            user,
+            ...createPostDto,
+        };
+    }
+
+    getAllUserPosts(user: User) {
+        return this.postModel.findAll({ user});
+    }
+
+    update(id: number, updatePostDto: UpdatePostDto) {
+        return `This action updates a #${id} post`;
+    }
+
+    remove(id: number) {
+        return `This action removes a #${id} post`;
+    }
 }

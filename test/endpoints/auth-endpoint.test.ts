@@ -3,9 +3,9 @@ import * as pactum from "pactum";
 
 export const authEndpointTest = () => {
 
-    describe("User Register Test", () => {
+    describe("Auth Register Test", () => {
 
-        describe("/auth/register - Testing Auth/User Registering", () => {
+        describe("/auth/register - Testing Auth Registering", () => {
 
             const endPoint = "/auth/register";
 
@@ -78,9 +78,9 @@ export const authEndpointTest = () => {
     });
 
 
-    describe("User Login Test", () => {
+    describe("Auth Login Test", () => {
 
-        describe("/auth/login - Testing Auth/User Login", () => {
+        describe("/auth/login - Testing Auth Login", () => {
 
             const endPoint = "/auth/login";
 
@@ -112,15 +112,9 @@ export const authEndpointTest = () => {
                     .post(endPoint)
                     .withBody(validLogin)
                     .expectStatus(HttpStatus.OK)
-                    .stores("userAT", "access_token");
+                    .stores("userAT", "access_token")
             });
         });
 
     });
-
-    // describe("Refresh token Test", () => {
-    //     it.todo("should return 400 - BAD REQUEST | No Token");
-    //     it.todo("should return 401 - UNAUTHORIZED | Invalid Token");
-    //     it.todo("should return 200 - OK | Valid Token");
-    // });
 };

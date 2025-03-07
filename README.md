@@ -5,6 +5,12 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
+## NestJS Blog API Project Summary
+
+```bash
+This API project implements a blog platform backend using NestJS and MongoDB. It features a comprehensive authentication system using JWT with access and refresh tokens, user capabilities including registration and profile updates, and a post management system. The application is built following NestJS practices, while leveraging Mongoose for database interactions and implementing proper validation and error handling throughout the codebase.
+```
+
 ## Project setup
 
 ```bash

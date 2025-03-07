@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsString, Length, Matches } from "class-validator"
 export class RegisterDto {
     @IsString()
     @IsNotEmpty()
-    @Length(4, 8)
+    @Length(6, 12, { message: "Username too short or too long" })
     username: string;
 
     @IsEmail()

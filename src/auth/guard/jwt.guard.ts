@@ -15,6 +15,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         if (err || !user) {
 
             const request = context.switchToHttp().getRequest();
+
+            // If no authorization header, throw an HttpException
+
+            if (!request.headers.authorization) {
+                throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+            }
+
             const token = request.headers.authorization.split(' ')[1];
 
             // Checking if token is valid (excluding if its expired)

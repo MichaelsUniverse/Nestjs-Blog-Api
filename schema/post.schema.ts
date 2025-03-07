@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import * as mongoose from 'mongoose';
+import { User } from './user.schema.js';
 
 export type PostDocument = HydratedDocument<Post>;
 
@@ -7,20 +9,20 @@ export type PostDocument = HydratedDocument<Post>;
 export class Post {
     @Prop({
         required: true,
-        unique: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
     })
-    username: string;
-
-    @Prop({
-        required: true,
-        unique: true
-    })
-    email: string;
+    user: User;
 
     @Prop({
         required: true
     })
-    hash: string;
+    title: string;
+
+    @Prop({
+        required: true
+    })
+    content: string;
 
     @Prop({
         required: true

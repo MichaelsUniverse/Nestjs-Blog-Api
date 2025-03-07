@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { EditUserDto } from './dto/index';
+import { EditUserDto } from './dto/edit-user.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../schema/user.schema';
@@ -40,7 +40,7 @@ export class UserService {
 
             // Hash new password
 
-            updateUserDto.password = await bcrypt.hash(password, 10);
+            updateUserDto.password = await bcrypt.hash(password, 12);
 
         }
 
