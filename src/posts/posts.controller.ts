@@ -23,13 +23,13 @@ export class PostsController {
         return this.postsService.getAllUserPosts(user);
     }
 
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-        return this.postsService.update(+id, updatePostDto);
+    @Patch('/update/:id')
+    update(@Param('id') id: string, @GetUser() user: User, @Body() updatePostDto: UpdatePostDto) {
+        return this.postsService.update(id, user, updatePostDto);
     }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.postsService.remove(+id);
+    @Delete('/delete/:id')
+    remove(@Param('id') id: string, @GetUser() user: User) {
+        return this.postsService.remove(id, user);
     }
 }

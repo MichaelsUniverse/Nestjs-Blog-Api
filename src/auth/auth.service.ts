@@ -86,13 +86,18 @@ export class AuthService {
 
             await newUser.save();
 
-            return {
-                message: 'User Registered',
-                status: HttpStatus.CREATED,
-            };
-
         } catch (error) {
-            throw new Error(error);
+            // If error, throw an HttpException
+            
+            return {
+                msg: error.codeName,
+                status: HttpStatus.BAD_REQUEST,
+            };
         }
+
+        return {
+            message: 'User Registered',
+            status: HttpStatus.CREATED,
+        };
     }
 }

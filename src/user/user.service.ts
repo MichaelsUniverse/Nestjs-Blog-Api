@@ -48,7 +48,7 @@ export class UserService {
 
             // Find and update user
 
-            const user = await this.userModel.findOneAndUpdate(
+            await this.userModel.findOneAndUpdate(
                 { _id: userId },
                 {
                     $inc: { __v: 1 },
@@ -65,6 +65,11 @@ export class UserService {
             // If error, throw an HttpException
 
             throw new HttpException(error.codeName, HttpStatus.BAD_REQUEST);
+        }
+
+        return {
+            message: 'User Updated',
+            status: HttpStatus.OK,
         }
     }
 }

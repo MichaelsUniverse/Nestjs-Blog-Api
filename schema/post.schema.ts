@@ -17,6 +17,11 @@ export class Post {
     @Prop({
         required: true
     })
+    username: string;
+
+    @Prop({
+        required: true
+    })
     title: string;
 
     @Prop({

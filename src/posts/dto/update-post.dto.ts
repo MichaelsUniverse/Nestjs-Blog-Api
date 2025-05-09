@@ -3,7 +3,7 @@ import { IsOptional, IsString, Length } from "class-validator";
 export class UpdatePostDto {
     @IsString()
     @IsOptional()
-    @Length(6, 14)
+    @Length(6, 24)
     title: string;
 
     @IsString()
