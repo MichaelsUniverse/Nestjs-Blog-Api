@@ -46,10 +46,7 @@ export class PostsService {
             }
 
         } catch (error) {
-            return {
-                msg: error.codeName,
-                status: HttpStatus.BAD_REQUEST,
-            };
+            throw new HttpException(error.codeName, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -70,19 +67,13 @@ export class PostsService {
         // Check if the post exists
 
         if (!post) {
-            return {
-                msg: 'Post not found',
-                status: HttpStatus.NOT_FOUND,
-            };
+            throw new HttpException('Post Not Found', HttpStatus.NOT_FOUND);
         }
 
         // Checking if the user is the owner of the post
 
         if (post.username !== user.username) {
-            return {
-                msg: 'You are not authorized to update this post',
-                status: HttpStatus.UNAUTHORIZED,
-            };
+            throw new HttpException('You are not Authorized to edit this post', HttpStatus.UNAUTHORIZED);
         }
 
         // Update the post
@@ -98,10 +89,7 @@ export class PostsService {
         } catch (error) {
             // If error, throw an HttpException
 
-            return {
-                msg: error.codeName,
-                status: HttpStatus.BAD_REQUEST,
-            };
+            throw new HttpException(error.codeName, HttpStatus.BAD_REQUEST);
         }
 
         return {
@@ -121,19 +109,13 @@ export class PostsService {
         // Check if the post exists
 
         if (!post) {
-            return {
-                msg: 'Post not found',
-                status: HttpStatus.NOT_FOUND,
-            };
+            throw new HttpException('Post Not Found', HttpStatus.NOT_FOUND);
         }
 
         // Checking if the user is the owner of the post
 
         if (post.username !== user.username) {
-            return {
-                msg: 'You are not authorized to delete this post',
-                status: HttpStatus.UNAUTHORIZED,
-            };
+            throw new HttpException('You are not Authorized to delete this post', HttpStatus.UNAUTHORIZED);
         }
 
         // Delete the post
@@ -143,10 +125,7 @@ export class PostsService {
         } catch (error) {
             // If error, throw an HttpException
 
-            return {
-                msg: error.codeName,
-                status: HttpStatus.BAD_REQUEST,
-            };
+            throw new HttpException(error.codeName, HttpStatus.BAD_REQUEST);
         }
 
         return {
