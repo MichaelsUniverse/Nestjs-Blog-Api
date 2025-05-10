@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { User } from '../../schema/user.schema';
@@ -33,11 +33,30 @@ export class PostsService {
         };
     }
 
-    getAllUserPosts(user: User) {
-        return this.postModel.find({ user }).exec();
+    async getAllUserPosts(user: User) {
+
+        try {
+
+            const posts = await this.postModel.find({ user }).exec()
+
+            return {
+                msg: "Posts Retrieved",
+                status: HttpStatus.OK,
+                user_posts: posts
+            }
+
+        } catch (error) {
+            throw new HttpException(error.codeName, HttpStatus.BAD_REQUEST);
+        }
     }
 
     async update(id: string, user: User, updatePostDto: UpdatePostDto) {
+
+        // Making sure updatePostDto isnt empty
+
+        if(!updatePostDto.title && !updatePostDto.content){
+            throw new HttpException('No Details Provided', HttpStatus.BAD_REQUEST);
+        }
 
         // Get post by ID and user
 
@@ -48,19 +67,13 @@ export class PostsService {
         // Check if the post exists
 
         if (!post) {
-            return {
-                msg: 'Post not found',
-                status: HttpStatus.NOT_FOUND,
-            };
+            throw new HttpException('Post Not Found', HttpStatus.NOT_FOUND);
         }
 
         // Checking if the user is the owner of the post
 
         if (post.username !== user.username) {
-            return {
-                msg: 'You are not authorized to update this post',
-                status: HttpStatus.UNAUTHORIZED,
-            };
+            throw new HttpException('You are not Authorized to edit this post', HttpStatus.UNAUTHORIZED);
         }
 
         // Update the post
@@ -76,10 +89,7 @@ export class PostsService {
         } catch (error) {
             // If error, throw an HttpException
 
-            return {
-                msg: error.codeName,
-                status: HttpStatus.BAD_REQUEST,
-            };
+            throw new HttpException(error.codeName, HttpStatus.BAD_REQUEST);
         }
 
         return {
@@ -99,19 +109,13 @@ export class PostsService {
         // Check if the post exists
 
         if (!post) {
-            return {
-                msg: 'Post not found',
-                status: HttpStatus.NOT_FOUND,
-            };
+            throw new HttpException('Post Not Found', HttpStatus.NOT_FOUND);
         }
 
         // Checking if the user is the owner of the post
 
         if (post.username !== user.username) {
-            return {
-                msg: 'You are not authorized to delete this post',
-                status: HttpStatus.UNAUTHORIZED,
-            };
+            throw new HttpException('You are not Authorized to delete this post', HttpStatus.UNAUTHORIZED);
         }
 
         // Delete the post
@@ -121,10 +125,7 @@ export class PostsService {
         } catch (error) {
             // If error, throw an HttpException
 
-            return {
-                msg: error.codeName,
-                status: HttpStatus.BAD_REQUEST,
-            };
+            throw new HttpException(error.codeName, HttpStatus.BAD_REQUEST);
         }
 
         return {

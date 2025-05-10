@@ -3,7 +3,7 @@ import { HttpStatus, INestApplication, ValidationPipe } from "@nestjs/common";
 import { AppModule } from "../src/app.module";
 import { ConfigModule } from "@nestjs/config";
 import * as pactum from "pactum";
-import { authEndpointTest, userEndpointTest } from "./endpoints/index";
+import { authEndpointTest, userEndpointTest, postEndpointTest } from "./endpoints/index";
 
 describe("AppController (e2e)", () => {
 
@@ -53,5 +53,9 @@ describe("AppController (e2e)", () => {
 
     describe('User Test', () => {
         userEndpointTest();
+    });
+
+    describe('Posts Test', () => {
+        postEndpointTest();
     });
 });
