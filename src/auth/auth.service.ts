@@ -88,11 +88,8 @@ export class AuthService {
 
         } catch (error) {
             // If error, throw an HttpException
-            
-            return {
-                msg: error.codeName,
-                status: HttpStatus.BAD_REQUEST,
-            };
+
+            throw new HttpException(error.codeName, HttpStatus.BAD_REQUEST);
         }
 
         return {
