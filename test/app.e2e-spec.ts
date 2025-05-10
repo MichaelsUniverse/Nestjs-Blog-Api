@@ -1,5 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { HttpStatus, INestApplication, ValidationPipe } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { AppModule } from "../src/app.module";
 import { ConfigModule } from "@nestjs/config";
 import * as pactum from "pactum";

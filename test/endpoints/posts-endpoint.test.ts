@@ -1,6 +1,5 @@
 import { HttpStatus } from "@nestjs/common";
 import * as pactum from "pactum";
-import { end } from "pactum/src/exports/reporter.js";
 
 export const postEndpointTest = () => {
 
