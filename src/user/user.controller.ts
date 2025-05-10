@@ -1,4 +1,4 @@
-import { Controller, Body, Patch, UseGuards, Get, HttpCode, HttpStatus, UseInterceptors } from '@nestjs/common';
+import { Controller, Body, Patch, UseGuards, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { EditUserDto } from './dto/edit-user.dto';
 import { GetUser } from './decorator/get-user.decorator';
