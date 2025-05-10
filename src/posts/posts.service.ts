@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { User } from '../../schema/user.schema';
@@ -33,11 +33,33 @@ export class PostsService {
         };
     }
 
-    getAllUserPosts(user: User) {
-        return this.postModel.find({ user }).exec();
+    async getAllUserPosts(user: User) {
+
+        try {
+
+            const posts = await this.postModel.find({ user }).exec()
+
+            return {
+                msg: "Posts Retrieved",
+                status: HttpStatus.OK,
+                user_posts: posts
+            }
+
+        } catch (error) {
+            return {
+                msg: error.codeName,
+                status: HttpStatus.BAD_REQUEST,
+            };
+        }
     }
 
     async update(id: string, user: User, updatePostDto: UpdatePostDto) {
+
+        // Making sure updatePostDto isnt empty
+
+        if(!updatePostDto.title && !updatePostDto.content){
+            throw new HttpException('No Details Provided', HttpStatus.BAD_REQUEST);
+        }
 
         // Get post by ID and user
 

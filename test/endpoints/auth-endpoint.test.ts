@@ -74,7 +74,6 @@ export const authEndpointTest = () => {
                     .expectStatus(HttpStatus.CREATED)
             });
         });
-
     });
 
 
