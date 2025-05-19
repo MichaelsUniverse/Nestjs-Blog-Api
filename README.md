@@ -24,6 +24,7 @@ $ npm install
 
 ```bash
 # development
+# *For Development make sure docker is open*
 $ ./start-dev.sh
 
 # production mode
@@ -34,5 +35,6 @@ $ npm run start:prod
 
 ```bash
 # e2e tests
+# *For tests make sure docker is open*
 $ npm run test:e2e
 ```
